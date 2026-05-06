@@ -1,0 +1,2412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlackDz Community</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050508;
+    --bg2: #0a0a10;
+    --bg3: #0f0f18;
+    --surface: #111118;
+    --surface2: #18181f;
+    --border: rgba(255,255,255,0.06);
+    --border2: rgba(255,255,255,0.12);
+    --accent: #c8102e;
+    --accent2: #ff2244;
+    --accent-glow: rgba(200,16,46,0.25);
+    --gold: #d4a017;
+    --gold2: #f0c040;
+    --text: #e8e8f0;
+    --text2: #9090a0;
+    --text3: #606070;
+    --green: #00c853;
+    --blue: #2979ff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(5,5,8,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--accent2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-logo span { color: var(--text); }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 900;
+    color: white;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text2);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .nav-links a:hover { color: var(--accent2); background: rgba(200,16,46,0.08); }
+
+  .nav-right { display: flex; gap: 10px; align-items: center; }
+
+  .btn-admin {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text2);
+    transition: all 0.2s;
+  }
+
+  .btn-admin:hover { border-color: var(--accent); color: var(--accent2); }
+
+  /* PAGES */
+  .page { display: none; padding-top: 64px; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 4rem 2rem;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(200,16,46,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200,16,46,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 800px; height: 800px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,16,46,0.08) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(200,16,46,0.3);
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 2rem;
+    background: rgba(200,16,46,0.06);
+  }
+
+  .pulse-dot {
+    width: 6px; height: 6px;
+    background: var(--accent2);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .hero-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title .black { color: var(--text); }
+  .hero-title .dz { color: var(--accent2); }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--text2);
+    font-weight: 300;
+    letter-spacing: 1px;
+    margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 32px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: none;
+    background: var(--accent);
+    color: white;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s;
+  }
+
+  .btn-primary:hover::before { transform: translateX(0); }
+  .btn-primary:hover { background: var(--accent2); box-shadow: 0 0 30px var(--accent-glow); }
+
+  .btn-secondary {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 13px 32px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text);
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent2); }
+
+  /* STATS */
+  .stats-bar {
+    position: relative;
+    z-index: 2;
+    margin-top: 4rem;
+    display: flex;
+    gap: 3rem;
+    padding: 1.5rem 3rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: rgba(10,10,16,0.8);
+  }
+
+  .stat-item { text-align: center; }
+
+  .stat-value {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+
+  .stat-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-top: 4px;
+  }
+
+  /* SECTION COMMON */
+  .section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+
+  .section-header {
+    margin-bottom: 3rem;
+  }
+
+  .section-tag {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+
+  .section-divider {
+    width: 40px;
+    height: 2px;
+    background: var(--accent);
+    margin-top: 1rem;
+  }
+
+  /* CARD COMPONENTS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    transition: all 0.3s;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    border-color: rgba(200,16,46,0.3);
+    background: var(--surface2);
+  }
+
+  /* WAR STATUS */
+  .war-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+  @media (max-width: 768px) {
+    .war-grid { grid-template-columns: 1fr; }
+    .stats-bar { flex-wrap: wrap; gap: 1.5rem; padding: 1.5rem; }
+    .nav-links { display: none; }
+  }
+
+  .war-card {
+    padding: 2rem;
+    position: relative;
+  }
+
+  .war-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+  }
+
+  .war-card.current::before { background: var(--accent); }
+  .war-card.next::before { background: var(--gold); }
+
+  .war-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+  }
+
+  .war-status-badge.live {
+    background: rgba(200,16,46,0.15);
+    color: var(--accent2);
+    border: 1px solid rgba(200,16,46,0.3);
+  }
+
+  .war-status-badge.upcoming {
+    background: rgba(212,160,23,0.1);
+    color: var(--gold2);
+    border: 1px solid rgba(212,160,23,0.3);
+  }
+
+  .war-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .war-info {
+    font-size: 0.85rem;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .war-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .war-meta-item { }
+
+  .war-meta-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 4px;
+  }
+
+  .war-meta-value {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* MODPACKS */
+  .modpacks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+
+  .modpack-card {
+    padding: 1.5rem;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .modpack-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--accent), #800020);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .modpack-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .modpack-desc {
+    font-size: 0.82rem;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .modpack-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .modpack-version {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--text3);
+  }
+
+  .btn-download {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 1px solid var(--accent);
+    background: rgba(200,16,46,0.1);
+    color: var(--accent2);
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-download:hover { background: var(--accent); color: white; }
+
+  /* SHOP */
+  .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.5rem; }
+
+  .shop-card {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shop-image {
+    height: 160px;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shop-badge {
+    position: absolute;
+    top: 10px; right: 10px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    background: var(--accent);
+    color: white;
+  }
+
+  .shop-info { padding: 1.2rem; }
+
+  .shop-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .shop-desc {
+    font-size: 0.78rem;
+    color: var(--text2);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .shop-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .shop-price {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--gold2);
+  }
+
+  .btn-buy {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 1px solid var(--gold);
+    background: rgba(212,160,23,0.1);
+    color: var(--gold2);
+    transition: all 0.2s;
+  }
+
+  .btn-buy:hover { background: var(--gold); color: var(--bg); }
+
+  /* SPOILERS */
+  .spoilers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+
+  .spoiler-card { padding: 1.5rem; cursor: pointer; }
+
+  .spoiler-locked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1rem;
+  }
+
+  .lock-icon { font-size: 2rem; }
+
+  .spoiler-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text);
+    text-align: center;
+  }
+
+  .spoiler-hint {
+    font-size: 0.78rem;
+    color: var(--text3);
+    text-align: center;
+  }
+
+  .spoiler-content { display: none; }
+  .spoiler-content.revealed { display: block; }
+
+  .spoiler-reveal-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .spoiler-text {
+    font-size: 0.85rem;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* ANNOUNCEMENTS */
+  .announcements-list { display: flex; flex-direction: column; gap: 1rem; }
+
+  .announcement-card {
+    padding: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .announcement-icon {
+    width: 40px; height: 40px;
+    min-width: 40px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  .announcement-icon.warning { background: rgba(212,160,23,0.15); }
+  .announcement-icon.info { background: rgba(41,121,255,0.15); }
+  .announcement-icon.danger { background: rgba(200,16,46,0.15); }
+
+  .announcement-body { flex: 1; }
+
+  .announcement-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .announcement-text {
+    font-size: 0.83rem;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  .announcement-date {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--text3);
+    margin-top: 0.5rem;
+  }
+
+  /* LAUNCHER PAGE */
+  .launcher-hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .launcher-icon {
+    width: 100px; height: 100px;
+    background: linear-gradient(135deg, var(--accent), #600015);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto 2rem;
+  }
+
+  .launcher-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--text);
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+  }
+
+  .launcher-desc {
+    font-size: 1rem;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+
+  .launcher-platforms {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-platform {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn-platform:hover { border-color: var(--accent); color: var(--accent2); }
+  .btn-platform.featured { background: var(--accent); border-color: var(--accent); color: white; }
+  .btn-platform.featured:hover { background: var(--accent2); }
+
+  .launcher-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 3rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .launcher-feature-card {
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .launcher-feature-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+
+  .launcher-feature-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .launcher-feature-desc { font-size: 0.78rem; color: var(--text2); line-height: 1.5; }
+
+  /* ADMIN MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    padding: 2rem;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    width: 100%;
+    max-width: 900px;
+    overflow: hidden;
+    margin: auto;
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .modal-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 1px;
+  }
+
+  .modal-close {
+    width: 32px; height: 32px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text2);
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover { border-color: var(--accent); color: var(--accent2); }
+
+  .modal-body { padding: 2rem; }
+
+  /* ADMIN TABS */
+  .admin-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+    overflow-x: auto;
+  }
+
+  .admin-tab {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    cursor: pointer;
+    color: var(--text3);
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .admin-tab:hover { color: var(--text2); }
+  .admin-tab.active { color: var(--accent2); border-bottom-color: var(--accent); }
+
+  .admin-panel { display: none; }
+  .admin-panel.active { display: block; }
+
+  /* FORM ELEMENTS */
+  .form-group { margin-bottom: 1.2rem; }
+
+  .form-label {
+    display: block;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 6px;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-size: 0.88rem;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .form-input:focus { border-color: var(--accent); }
+
+  .form-input textarea { resize: vertical; }
+
+  textarea.form-input { min-height: 100px; resize: vertical; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .form-actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+
+  /* WEBHOOK */
+  .webhook-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .webhook-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .webhook-preview {
+    background: #2f3136;
+    border-radius: 6px;
+    padding: 1rem;
+    border-left: 4px solid var(--accent);
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    color: #dcddde;
+    line-height: 1.5;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .webhook-preview .embed-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+  }
+
+  .webhook-preview .embed-title {
+    font-weight: 700;
+    color: white;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+
+  .webhook-preview .embed-desc { color: #b9bbbe; }
+  .webhook-preview .embed-footer { margin-top: 8px; font-size: 0.72rem; color: #72767d; }
+
+  /* STATUS INDICATOR */
+  .status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .status-row:last-child { border-bottom: none; }
+
+  .status-label { font-size: 0.85rem; color: var(--text2); }
+
+  .status-badge {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+
+  .status-badge.ok { background: rgba(0,200,83,0.15); color: var(--green); }
+  .status-badge.error { background: rgba(200,16,46,0.15); color: var(--accent2); }
+  .status-badge.pending { background: rgba(212,160,23,0.1); color: var(--gold2); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 999;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    animation: slideIn 0.3s ease;
+  }
+
+  .toast.success { background: rgba(0,200,83,0.15); border: 1px solid rgba(0,200,83,0.3); color: var(--green); }
+  .toast.error { background: rgba(200,16,46,0.15); border: 1px solid rgba(200,16,46,0.3); color: var(--accent2); }
+  .toast.show { display: flex; }
+
+  @keyframes slideIn {
+    from { transform: translateX(100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  /* LOGIN */
+  .login-card {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2.5rem;
+  }
+
+  .login-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .login-subtitle { font-size: 0.83rem; color: var(--text2); text-align: center; margin-bottom: 2rem; }
+
+  /* War updates list */
+  .updates-list { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .update-item {
+    display: flex;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .update-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .update-date-col { min-width: 80px; text-align: center; }
+
+  .update-day {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent2);
+    line-height: 1;
+  }
+
+  .update-month {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+
+  .update-content { flex: 1; }
+
+  .update-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .update-text { font-size: 0.82rem; color: var(--text2); line-height: 1.6; }
+
+  /* FIREBASE CONFIG BOX */
+  .config-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1.5rem;
+    font-family: 'Inter', monospace;
+    font-size: 0.8rem;
+    color: var(--text2);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .config-box .key { color: #569cd6; }
+  .config-box .val { color: #ce9178; }
+
+  .section-full { padding: 3rem 2rem; }
+
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* Mobile menu toggle */
+  .mobile-menu-btn {
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text2);
+    width: 36px; height: 36px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-menu-btn { display: flex; }
+  }
+
+  /* ITEMS LIST in admin */
+  .admin-items-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
+
+  .admin-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .admin-item-name { font-size: 0.85rem; color: var(--text); }
+  .admin-item-actions { display: flex; gap: 6px; }
+
+  .btn-icon {
+    width: 28px; height: 28px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    transition: all 0.2s;
+  }
+
+  .btn-icon.edit { color: var(--blue); }
+  .btn-icon.edit:hover { border-color: var(--blue); background: rgba(41,121,255,0.1); }
+  .btn-icon.del { color: var(--accent2); }
+  .btn-icon.del:hover { border-color: var(--accent); background: rgba(200,16,46,0.1); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-icon">B</div>
+    <span>BLACK</span><span style="color:var(--accent2)">DZ</span>
+  </div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Home</a></li>
+    <li><a onclick="showPage('wars')">Guerras</a></li>
+    <li><a onclick="showPage('modpacks')">Modpacks</a></li>
+    <li><a onclick="showPage('shop')">Loja</a></li>
+    <li><a onclick="showPage('spoilers')">Spoilers</a></li>
+    <li><a onclick="showPage('announcements')">Avisos</a></li>
+    <li><a onclick="showPage('launcher')">Launcher</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-admin" onclick="openAdmin()">⚙ Admin</button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <div class="pulse-dot"></div>
+        Guerras em produçao...
+      </div>
+      <div class="hero-title">
+        <div class="black">BLACK DZ</div>
+        <div class="black" style="font-size: 0.4em; letter-spacing: 8px; font-weight: 400; color: var(--text2);">COMMUNITY</div>
+      </div>
+      <div class="hero-cta">
+        <button class="btn-primary" onclick="showPage('launcher')">⬇ Baixar Launcher</button>
+        <button class="btn-secondary" onclick="showPage('wars')">Ver Guerras</button>
+      </div>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-value" id="stat-wars">12</div>
+        <div class="stat-label">Guerras Realizadas</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="stat-members">1.2K</div>
+        <div class="stat-label">Membros Discord</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WARS PAGE -->
+<div id="page-wars" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">⚔ Batalhas</div>
+      <h2 class="section-title">Guerras</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="war-grid">
+      <div class="card war-card current">
+        <div class="war-status-badge live"><div class="pulse-dot"></div> ATUAL</div>
+        <div class="war-name" id="current-war-name"></div>
+        <div class="war-info" id="current-war-info"></div>
+        <div class="war-meta">
+
+          <div class="war-meta-item">
+            <div class="war-meta-label">Times</div>
+            <div class="war-meta-value" id="current-war-teams"></div>
+          </div>
+          <div class="war-meta-item">
+            <div class="war-meta-label">Início</div>
+            <div class="war-meta-value" id="current-war-date"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card war-card next">
+        <div class="war-status-badge upcoming">📅 Proximo</div>
+        <div class="war-name" id="next-war-name"></div>
+        <div class="war-info" id="next-war-info"></div>
+        <div class="war-meta">
+          <div class="war-meta-item">
+            <div class="war-meta-label">Data</div>
+            <div class="war-meta-value" id="next-war-date"></div>
+          </div>
+
+          <div class="war-meta-item">
+            <div class="war-meta-label">Formato</div>
+            <div class="war-meta-value" id="next-war-format">FFA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 3rem;">
+      <div class="section-header">
+        <div class="section-tag">📰 Histórico</div>
+        <h3 class="section-title" style="font-size: 1.5rem;">Atualizações de Guerras</h3>
+      </div>
+      <div class="updates-list" id="war-updates-list">
+        <!-- populated by JS -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODPACKS PAGE -->
+<div id="page-modpacks" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">📦 Downloads</div>
+      <h2 class="section-title">Modpacks</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="modpacks-grid" id="modpacks-grid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- SHOP PAGE -->
+<div id="page-shop" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">🛒 Loja</div>
+      <h2 class="section-title">Mini Loja</h2>
+      <div class="section-divider"></div>
+      <p style="color: var(--text2); font-size: 0.88rem; margin-top: 0.8rem;">Itens exclusivos para membros da BlackDz Community</p>
+    </div>
+    <div class="shop-grid" id="shop-grid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- SPOILERS PAGE -->
+<div id="page-spoilers" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">🔐 Exclusivo</div>
+      <h2 class="section-title">Spoilers</h2>
+      <div class="section-divider"></div>
+      <p style="color: var(--text2); font-size: 0.88rem; margin-top: 0.8rem;">Clique nos cards para revelar conteúdo exclusivo</p>
+    </div>
+    <div class="spoilers-grid" id="spoilers-grid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ANNOUNCEMENTS PAGE -->
+<div id="page-announcements" class="page">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-tag">📢 Avisos</div>
+      <h2 class="section-title">Avisos Exclusivos</h2>
+      <div class="section-divider"></div>
+      <p style="color: var(--text2); font-size: 0.88rem; margin-top: 0.8rem;">Informações que NÃO são divulgadas no servidor Discord</p>
+    </div>
+    <div class="announcements-list" id="announcements-list">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- LAUNCHER PAGE -->
+<div id="page-launcher" class="page">
+  <div class="launcher-hero">
+    <div class="launcher-icon">🚀</div>
+    <h1 class="launcher-title">BlackDz Launcher</h1>
+    <p class="launcher-desc">Launcher Em Desenvolvimendo</p>
+    <div class="launcher-platforms">
+      <button class="btn-platform featured" onclick="downloadLauncher('windows')">🪟 Windows</button>
+      <button class="btn-platform" onclick="downloadLauncher('linux')">🐧 Linux</button>
+    </div>
+    <p style="font-size: 0.75rem; color: var(--text3); margin-top: 1rem;">v<span id="launcher-version">1.0.0</span></p>
+  </div>
+
+  <div class="launcher-features container">
+    <div class="card launcher-feature-card">
+      <div class="launcher-feature-icon">⚡</div>
+      <div class="launcher-feature-title">Auto-Update</div>
+      <div class="launcher-feature-desc">Modpacks sempre atualizados automaticamente sem esforço.</div>
+    </div>
+    <div class="card launcher-feature-card">
+      <div class="launcher-feature-icon">🎮</div>
+      <div class="launcher-feature-title">Multi-Perfil</div>
+      <div class="launcher-feature-desc">Troque entre diferentes modpacks de guerras com facilidade.</div>
+    </div>
+    <div class="card launcher-feature-card">
+      <div class="launcher-feature-icon">🔧</div>
+      <div class="launcher-feature-title">Otimizado</div>
+      <div class="launcher-feature-desc">Configurações de memória ajustavel.</div>
+    </div>
+    <div class="card launcher-feature-card">
+      <div class="launcher-feature-icon">🔒</div>
+      <div class="launcher-feature-title">Seguro</div>
+      <div class="launcher-feature-desc">100% Livre de virus.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
+<div class="modal-overlay" id="admin-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">⚙ PAINEL ADMIN — BLACKDZ</span>
+      <button class="modal-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="modal-body">
+
+      <!-- LOGIN STATE -->
+      <div id="admin-login" class="card login-card">
+        <div class="login-title">🔐 Admin</div>
+        <div class="login-subtitle">Acesse o painel de controle</div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="admin-email" placeholder="">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Senha</label>
+          <input type="password" class="form-input" id="admin-pass" placeholder="••••••••">
+        </div>
+        <button class="btn-primary" style="width:100%; margin-top: 0.5rem;" onclick="adminLogin()">Entrar</button>
+        <p style="font-size: 0.75rem; color: var(--text3); text-align: center; margin-top: 1rem;">Configure suas credenciais no Firebase Auth</p>
+      </div>
+
+      <!-- ADMIN PANEL (after login) -->
+      <div id="admin-panel" style="display: none;">
+
+        <!-- Firebase Config Notice -->
+        <div style="background: rgba(41,121,255,0.08); border: 1px solid rgba(41,121,255,0.2); border-radius: 6px; padding: 1rem 1.2rem; margin-bottom: 1.5rem; font-size: 0.8rem; color: #7ab3ff;">
+          ℹ Configure o Firebase: substitua as variáveis <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">FIREBASE_CONFIG</code> no script antes de publicar.
+        </div>
+
+        <div class="admin-tabs">
+          <div class="admin-tab active" onclick="switchTab('wars-tab', this)">⚔ Guerras</div>
+          <div class="admin-tab" onclick="switchTab('modpacks-tab', this)">📦 Modpacks</div>
+          <div class="admin-tab" onclick="switchTab('shop-tab', this)">🛒 Loja</div>
+          <div class="admin-tab" onclick="switchTab('spoilers-tab', this)">🔐 Spoilers</div>
+          <div class="admin-tab" onclick="switchTab('announcements-tab', this)">📢 Avisos</div>
+          <div class="admin-tab" onclick="switchTab('webhook-tab', this)">🔔 Discord</div>
+          <div class="admin-tab" onclick="switchTab('launcher-tab', this)">🚀 Launcher</div>
+          <div class="admin-tab" onclick="switchTab('settings-tab', this)">⚙ Config</div>
+        </div>
+
+        <!-- WARS TAB -->
+        <div id="wars-tab" class="admin-panel active">
+          <h3 style="font-family: 'Rajdhani'; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 1.5rem;">GUERRA ATUAL</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nome da Guerra</label>
+              <input class="form-input" id="f-cwar-name" placeholder="Ex: Guerra das Trevas IV">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mapa</label>
+              <input class="form-input" id="f-cwar-map" placeholder="Ex: Nether_v2">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Times</label>
+              <input class="form-input" id="f-cwar-teams" placeholder="Ex: 2v2">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Data Início</label>
+              <input class="form-input" id="f-cwar-date" placeholder="Ex: Mai 03">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descrição</label>
+            <textarea class="form-input" id="f-cwar-info" placeholder="Detalhes da guerra atual..."></textarea>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid var(--border); margin: 2rem 0;">
+          <h3 style="font-family: 'Rajdhani'; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 1.5rem;">PRÓXIMA GUERRA</h3>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Nome</label>
+              <input class="form-input" id="f-nwar-name" placeholder="Ex: Evento: Fim do Mundo">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Data</label>
+              <input class="form-input" id="f-nwar-date" placeholder="Ex: Mai 20">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Mapa</label>
+              <input class="form-input" id="f-nwar-map" placeholder="Ex: End_final">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Formato</label>
+              <input class="form-input" id="f-nwar-format" placeholder="Ex: FFA, 2v2">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descrição</label>
+            <textarea class="form-input" id="f-nwar-info" placeholder="Detalhes da próxima guerra..."></textarea>
+          </div>
+
+          <hr style="border: none; border-top: 1px solid var(--border); margin: 2rem 0;">
+          <h3 style="font-family: 'Rajdhani'; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 1.5rem;">ADICIONAR ATUALIZAÇÃO</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Título</label>
+              <input class="form-input" id="f-update-title" placeholder="Ex: Clã Vermelho destruiu base">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Data (Dia / Mês)</label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <input class="form-input" id="f-update-day" placeholder="03">
+                <input class="form-input" id="f-update-month" placeholder="Mai">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Texto</label>
+            <textarea class="form-input" id="f-update-text" placeholder="Detalhes do que aconteceu..."></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-primary" onclick="saveWars()">💾 Salvar Guerras</button>
+            <button class="btn-secondary" onclick="addWarUpdate()">+ Add Atualização</button>
+          </div>
+        </div>
+
+        <!-- MODPACKS TAB -->
+        <div id="modpacks-tab" class="admin-panel">
+          <div class="form-group">
+            <label class="form-label">Nome do Modpack</label>
+            <input class="form-input" id="f-mp-name" placeholder="Ex: BlackDz Wars Pack">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descrição</label>
+            <textarea class="form-input" id="f-mp-desc" placeholder="Descrição do modpack..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Versão</label>
+              <input class="form-input" id="f-mp-version" placeholder="Ex: 1.20.1">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Ícone (emoji)</label>
+              <input class="form-input" id="f-mp-icon" placeholder="Ex: ⚔">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">URL de Download</label>
+            <input class="form-input" id="f-mp-url" placeholder="https://drive.google.com/...">
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" onclick="addModpack()">+ Adicionar Modpack</button>
+          </div>
+          <div class="admin-items-list" id="admin-modpacks-list"></div>
+        </div>
+
+        <!-- SHOP TAB -->
+        <div id="shop-tab" class="admin-panel">
+          <div class="form-group">
+            <label class="form-label">Nome do Item</label>
+            <input class="form-input" id="f-sh-name" placeholder="Ex: Cargo VIP">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Descrição</label>
+            <textarea class="form-input" id="f-sh-desc" placeholder="Descrição do item..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Preço</label>
+              <input class="form-input" id="f-sh-price" placeholder="Ex: R$ 15,00">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Badge (ex: NOVO, HOT)</label>
+              <input class="form-input" id="f-sh-badge" placeholder="Ex: NOVO">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Ícone (emoji)</label>
+              <input class="form-input" id="f-sh-icon" placeholder="⭐">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Link de Compra</label>
+              <input class="form-input" id="f-sh-link" placeholder="https://...">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" onclick="addShopItem()">+ Adicionar Item</button>
+          </div>
+          <div class="admin-items-list" id="admin-shop-list"></div>
+        </div>
+
+        <!-- SPOILERS TAB -->
+        <div id="spoilers-tab" class="admin-panel">
+          <div class="form-group">
+            <label class="form-label">Título (visível)</label>
+            <input class="form-input" id="f-sp-title" placeholder="Ex: Próxima Guerra Secreta">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dica (visível bloqueado)</label>
+            <input class="form-input" id="f-sp-hint" placeholder="Ex: Algo grande está chegando...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Conteúdo Revelado</label>
+            <textarea class="form-input" id="f-sp-content" placeholder="Conteúdo secreto que aparece ao clicar..."></textarea>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" onclick="addSpoiler()">+ Adicionar Spoiler</button>
+          </div>
+          <div class="admin-items-list" id="admin-spoilers-list"></div>
+        </div>
+
+        <!-- ANNOUNCEMENTS TAB -->
+        <div id="announcements-tab" class="admin-panel">
+          <div class="form-group">
+            <label class="form-label">Título do Aviso</label>
+            <input class="form-input" id="f-an-title" placeholder="Ex: Mudança de regras">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Texto</label>
+            <textarea class="form-input" id="f-an-text" placeholder="Texto completo do aviso..."></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Tipo</label>
+              <select class="form-input" id="f-an-type">
+                <option value="info">ℹ Info</option>
+                <option value="warning">⚠ Aviso</option>
+                <option value="danger">🚨 Urgente</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Data</label>
+              <input class="form-input" id="f-an-date" placeholder="Ex: 06/05/2026">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" onclick="addAnnouncement()">+ Adicionar Aviso</button>
+          </div>
+          <div class="admin-items-list" id="admin-announcements-list"></div>
+        </div>
+
+        <!-- WEBHOOK TAB -->
+        <div id="webhook-tab" class="admin-panel">
+          <div class="webhook-section">
+            <div class="webhook-title">🔗 URLs dos Webhooks Discord</div>
+            <div class="form-group">
+              <label class="form-label">Webhook Principal (Guerras)</label>
+              <input class="form-input" id="wh-wars" placeholder="https://discord.com/api/webhooks/...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Webhook Anúncios</label>
+              <input class="form-input" id="wh-announcements" placeholder="https://discord.com/api/webhooks/...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Webhook Loja</label>
+              <input class="form-input" id="wh-shop" placeholder="https://discord.com/api/webhooks/...">
+            </div>
+            <button class="btn-secondary" onclick="saveWebhooks()" style="margin-top: 0.5rem;">💾 Salvar Webhooks</button>
+          </div>
+
+          <div class="webhook-section">
+            <div class="webhook-title">📤 Enviar Mensagem ao Discord</div>
+            <div class="form-group">
+              <label class="form-label">Canal destino</label>
+              <select class="form-input" id="wh-target">
+                <option value="wars">⚔ Guerras</option>
+                <option value="announcements">📢 Anúncios</option>
+                <option value="shop">🛒 Loja</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Cor do Embed (hex)</label>
+              <input class="form-input" id="wh-color" placeholder="#c8102e" value="#c8102e">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Título do Embed</label>
+              <input class="form-input" id="wh-title" placeholder="Ex: ⚔ Nova Guerra Anunciada!" oninput="updatePreview()">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Descrição</label>
+              <textarea class="form-input" id="wh-desc" placeholder="Texto da mensagem embed..." oninput="updatePreview()"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Rodapé</label>
+              <input class="form-input" id="wh-footer" placeholder="BlackDz Community" oninput="updatePreview()">
+            </div>
+
+            <div class="webhook-preview" id="webhook-preview">
+              <div class="embed-author">🔴 BlackDz Community</div>
+              <div class="embed-title" id="prev-title">Título aqui</div>
+              <div class="embed-desc" id="prev-desc">Descrição aqui</div>
+              <div class="embed-footer" id="prev-footer">BlackDz Community</div>
+            </div>
+
+            <div class="form-actions" style="margin-top: 1rem;">
+              <button class="btn-primary" onclick="sendWebhook()">📤 Enviar ao Discord</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LAUNCHER TAB -->
+        <div id="launcher-tab" class="admin-panel">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Versão do Launcher</label>
+              <input class="form-input" id="f-lv-version" placeholder="Ex: 1.0.0">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">URL Download Windows (.exe)</label>
+            <input class="form-input" id="f-lv-win" placeholder="https://...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">URL Download Linux (.AppImage)</label>
+            <input class="form-input" id="f-lv-linux" placeholder="https://...">
+          </div>
+          <div class="form-group">
+            <label class="form-label">URL Download macOS (.dmg)</label>
+            <input class="form-input" id="f-lv-mac" placeholder="https://...">
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" onclick="saveLauncher()">💾 Salvar Launcher</button>
+          </div>
+        </div>
+
+        <!-- SETTINGS TAB -->
+        <div id="settings-tab" class="admin-panel">
+          <h3 style="font-family: 'Rajdhani'; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 1.5rem;">CONFIGURAÇÃO FIREBASE</h3>
+          <div class="config-box">
+            <div><span class="key">apiKey:</span> <span class="val">"AIzaSyASgfCLrzkgOaBqc0yXCxiiry5n5fNpKKw"</span></div>
+            <div><span class="key">authDomain:</span> <span class="val">"blackdz-community.firebaseapp.com"</span></div>
+            <div><span class="key">projectId:</span> <span class="val">"blackdz-community"</span></div>
+            <div><span class="key">storageBucket:</span> <span class="val">"blackdz-community.firebasestorage.app"</span></div>
+            <div><span class="key">messagingSenderId:</span> <span class="val">"198528397045"</span></div>
+            <div><span class="key">appId:</span> <span class="val">"1:198528397045:web:f7810430b159db1a5c5fbc"</span></div>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text2); line-height: 1.6; margin-bottom: 1.5rem;">Substitua os valores acima pelas suas credenciais do Firebase Console → Configurações do Projeto → Seus apps.</p>
+
+          <h3 style="font-family: 'Rajdhani'; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 1rem;">ESTATÍSTICAS DO SITE</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Jogadores Online</label>
+              <input class="form-input" id="f-stat-players" placeholder="247">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Guerras Realizadas</label>
+              <input class="form-input" id="f-stat-wars" placeholder="12">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Membros Discord</label>
+              <input class="form-input" id="f-stat-members" placeholder="1.2K">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Qtd Modpacks (auto)</label>
+              <input class="form-input" value="Auto" disabled style="opacity: 0.5;">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn-primary" onclick="saveStats()">💾 Salvar Stats</button>
+            <button class="btn-secondary" onclick="adminLogout()">🚪 Sair</button>
+          </div>
+
+          <div style="margin-top: 2rem;">
+            <h3 style="font-family: 'Rajdhani'; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text3); margin-bottom: 1rem;">STATUS DOS SERVIÇOS</h3>
+            <div class="status-row">
+              <span class="status-label">Firebase Firestore</span>
+              <span class="status-badge pending" id="status-firebase">Configurar</span>
+            </div>
+            <div class="status-row">
+              <span class="status-label">Discord Webhook (Guerras)</span>
+              <span class="status-badge pending" id="status-wh-wars">Não configurado</span>
+            </div>
+            <div class="status-row">
+              <span class="status-label">Discord Webhook (Anúncios)</span>
+              <span class="status-badge pending" id="status-wh-ann">Não configurado</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- FIREBASE SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<script>
+// ============================================================
+// FIREBASE CONFIG — Substitua com suas credenciais
+// ============================================================
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyASgfCLrzkgOaBqc0yXCxiiry5n5fNpKKw",
+  authDomain: "blackdz-community.firebaseapp.com",
+  projectId: "blackdz-community",
+  storageBucket: "blackdz-community.firebasestorage.app",
+  messagingSenderId: "198528397045",
+  appId: "1:198528397045:web:f7810430b159db1a5c5fbc"
+};
+
+// ============================================================
+// DEFAULT DATA (localStorage fallback when Firebase not set up)
+// ============================================================
+let appData = {
+  wars: {
+    current: {
+      name: "Guerra das Trevas IV",
+      info: "Batalha épica entre os clãs Vermelho e Negro. O servidor está no limite!",
+      map: "Nether_v2",
+      teams: "2v2",
+      date: "Mai 03"
+    },
+    next: {
+      name: "Evento: Fim do Mundo",
+      info: "Prepare seu arsenal. Uma guerra de todos contra todos no The End.",
+      date: "Mai 20",
+      map: "End_final",
+      format: "FFA"
+    },
+    updates: [
+    
+    ]
+  },
+  modpacks: [
+
+  ],
+  shop: [
+    { id: 1, name: "Kit Guerreiro", desc: "Kit Inicial Reforçado no Guerra.", price: "R$ 8,00", badge: "NOVO", icon: "🗡", link: "#" },
+
+  ],
+  spoilers: [
+    { id: 1, title: "Próxima Guerra", hint: "Algo grande está chegando em maio...", content: "Estamos preparando um guerra de Dragon Block C com sistemas, missoes, formas e muitas outras coisas nunca vistas antes!" },
+  ],
+  announcements: [
+  ],
+  launcher: {
+    version: "1.0.0",
+    win: "#",
+    linux: "#",
+    mac: "#"
+  },
+  webhooks: {
+    wars: "",
+    announcements: "",
+    shop: ""
+  },
+  stats: {
+    players: "247",
+    wars: "12",
+    members: "1.2K"
+  }
+};
+
+// ============================================================
+// FIREBASE INIT — Firestore
+// ============================================================
+let db = null;
+let auth = null;
+let firebaseReady = false;
+
+try {
+  firebase.initializeApp(FIREBASE_CONFIG);
+  db = firebase.firestore();
+  auth = firebase.auth();
+  firebaseReady = true;
+  loadFromFirestore();
+} catch(e) {
+  loadFromLocalStorage();
+  renderAll();
+}
+
+async function loadFromFirestore() {
+  try {
+    const collections = ['wars', 'modpacks', 'shop', 'spoilers', 'announcements', 'launcher', 'webhooks', 'stats'];
+    for (const col of collections) {
+      if (['wars', 'launcher', 'webhooks', 'stats'].includes(col)) {
+        // single-doc collections stored as doc "data"
+        const snap = await db.collection(col).doc('data').get();
+        if (snap.exists) appData[col] = snap.data();
+      } else {
+        // array collections stored as multiple docs
+        const snap = await db.collection(col).orderBy('_order', 'asc').get();
+        if (!snap.empty) {
+          appData[col] = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        }
+      }
+    }
+  } catch(e) {
+    console.warn('Firestore load error:', e);
+    loadFromLocalStorage();
+  }
+  renderAll();
+}
+
+function loadFromLocalStorage() {
+  const saved = localStorage.getItem('blackdz_data');
+  if (saved) {
+    try { appData = { ...appData, ...JSON.parse(saved) }; } catch(e) {}
+  }
+}
+
+async function saveData() {
+  localStorage.setItem('blackdz_data', JSON.stringify(appData));
+  if (!firebaseReady || !db) return;
+  try {
+    // Save single-doc sections
+    for (const col of ['wars', 'launcher', 'webhooks', 'stats']) {
+      await db.collection(col).doc('data').set(appData[col]);
+    }
+    // Save array sections: delete all then re-insert
+    for (const col of ['modpacks', 'shop', 'spoilers', 'announcements']) {
+      const existing = await db.collection(col).get();
+      const batch = db.batch();
+      existing.docs.forEach(d => batch.delete(d.ref));
+      appData[col].forEach((item, i) => {
+        const ref = db.collection(col).doc(String(item.id || Date.now() + i));
+        batch.set(ref, { ...item, _order: i });
+      });
+      await batch.commit();
+    }
+  } catch(e) {
+    console.warn('Firestore save error:', e);
+  }
+}
+
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
+function renderAll() {
+  renderWars();
+  renderModpacks();
+  renderShop();
+  renderSpoilers();
+  renderAnnouncements();
+  renderStats();
+  renderLauncher();
+}
+
+function renderWars() {
+  const w = appData.wars;
+  setText('current-war-name', w.current.name);
+  setText('current-war-info', w.current.info);
+  setText('current-war-map', w.current.map);
+  setText('current-war-teams', w.current.teams);
+  setText('current-war-date', w.current.date);
+  setText('next-war-name', w.next.name);
+  setText('next-war-info', w.next.info);
+  setText('next-war-date', w.next.date);
+  setText('next-war-map', w.next.map);
+  setText('next-war-format', w.next.format);
+
+  const list = document.getElementById('war-updates-list');
+  if (!list) return;
+  list.innerHTML = w.updates.map(u => `
+    <div class="update-item">
+      <div class="update-date-col">
+        <div class="update-day">${u.day}</div>
+        <div class="update-month">${u.month}</div>
+      </div>
+      <div class="update-content">
+        <div class="update-title">${u.title}</div>
+        <div class="update-text">${u.text}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderModpacks() {
+  const g = document.getElementById('modpacks-grid');
+  if (!g) return;
+  g.innerHTML = appData.modpacks.map(m => `
+    <div class="card modpack-card">
+      <div class="modpack-icon">${m.icon}</div>
+      <div class="modpack-name">${m.name}</div>
+      <div class="modpack-desc">${m.desc}</div>
+      <div class="modpack-footer">
+        <span class="modpack-version">MC ${m.version}</span>
+        <a class="btn-download" href="${m.url}" target="_blank">⬇ Baixar</a>
+      </div>
+    </div>
+  `).join('');
+  setText('stat-modpacks', appData.modpacks.length);
+}
+
+function renderShop() {
+  const g = document.getElementById('shop-grid');
+  if (!g) return;
+  g.innerHTML = appData.shop.map(s => `
+    <div class="card shop-card">
+      <div class="shop-image">
+        ${s.badge ? `<div class="shop-badge">${s.badge}</div>` : ''}
+        <span style="font-size:2.5rem">${s.icon}</span>
+      </div>
+      <div class="shop-info">
+        <div class="shop-name">${s.name}</div>
+        <div class="shop-desc">${s.desc}</div>
+        <div class="shop-footer">
+          <div class="shop-price">${s.price}</div>
+          <a class="btn-buy" href="${s.link}" target="_blank">Comprar</a>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderSpoilers() {
+  const g = document.getElementById('spoilers-grid');
+  if (!g) return;
+  g.innerHTML = appData.spoilers.map((s, i) => `
+    <div class="card spoiler-card" onclick="toggleSpoiler(${i}, this)" id="spoiler-${i}">
+      <div class="spoiler-locked" id="spoiler-lock-${i}">
+        <div class="lock-icon">🔐</div>
+        <div class="spoiler-title">${s.title}</div>
+        <div class="spoiler-hint">${s.hint}</div>
+        <div style="margin-top: 0.8rem; font-family: 'Rajdhani'; font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent2);">CLIQUE PARA REVELAR</div>
+      </div>
+      <div class="spoiler-content" id="spoiler-content-${i}">
+        <div class="spoiler-reveal-label">🔓 SPOILER REVELADO</div>
+        <div class="spoiler-text">${s.content}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleSpoiler(i, el) {
+  const lock = document.getElementById(`spoiler-lock-${i}`);
+  const content = document.getElementById(`spoiler-content-${i}`);
+  lock.style.display = lock.style.display === 'none' ? '' : 'none';
+  content.classList.toggle('revealed');
+}
+
+function renderAnnouncements() {
+  const list = document.getElementById('announcements-list');
+  if (!list) return;
+  const icons = { info: '📢', warning: '⚠', danger: '🚨' };
+  list.innerHTML = appData.announcements.map(a => `
+    <div class="card announcement-card">
+      <div class="announcement-icon ${a.type}">${icons[a.type] || '📢'}</div>
+      <div class="announcement-body">
+        <div class="announcement-title">${a.title}</div>
+        <div class="announcement-text">${a.text}</div>
+        <div class="announcement-date">${a.date}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderStats() {
+  const s = appData.stats;
+  setText('stat-players', s.players || '247');
+  setText('stat-wars', s.wars || '12');
+  setText('stat-members', s.members || '1.2K');
+}
+
+function renderLauncher() {
+  const l = appData.launcher;
+  setText('launcher-version', l.version || '1.0.0');
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`page-${id}`).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+let isLoggedIn = false;
+
+function openAdmin() {
+  document.getElementById('admin-modal').classList.add('open');
+  if (isLoggedIn) {
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    populateAdminForms();
+  }
+}
+
+function closeAdmin() {
+  document.getElementById('admin-modal').classList.remove('open');
+}
+
+function adminLogin() {
+  const email = document.getElementById('admin-email').value.trim();
+  const pass = document.getElementById('admin-pass').value;
+
+  if (!email || !pass) { toast('Preencha email e senha', 'error'); return; }
+
+  if (!firebaseReady || !auth) {
+    toast('Firebase não configurado. Adicione suas credenciais no FIREBASE_CONFIG.', 'error');
+    return;
+  }
+
+  const btnLogin = document.querySelector('#admin-login .btn-primary');
+  btnLogin.textContent = 'Entrando...';
+  btnLogin.disabled = true;
+
+  auth.signInWithEmailAndPassword(email, pass)
+    .then(() => {
+      isLoggedIn = true;
+      document.getElementById('admin-login').style.display = 'none';
+      document.getElementById('admin-panel').style.display = 'block';
+      populateAdminForms();
+      toast('Login realizado!', 'success');
+    })
+    .catch(e => {
+      const msgs = {
+        'auth/user-not-found': 'Usuário não encontrado.',
+        'auth/wrong-password': 'Senha incorreta.',
+        'auth/invalid-email': 'Email inválido.',
+        'auth/too-many-requests': 'Muitas tentativas. Aguarde um momento.',
+        'auth/invalid-credential': 'Email ou senha incorretos.',
+        'auth/network-request-failed': 'Erro de rede. Verifique sua conexão.',
+      };
+      toast(msgs[e.code] || `Erro: ${e.message}`, 'error');
+    })
+    .finally(() => {
+      btnLogin.textContent = 'Entrar';
+      btnLogin.disabled = false;
+    });
+}
+
+function adminLogout() {
+  isLoggedIn = false;
+  if (auth) auth.signOut().catch(()=>{});
+  document.getElementById('admin-login').style.display = 'block';
+  document.getElementById('admin-panel').style.display = 'none';
+  closeAdmin();
+  toast('Logout realizado', 'success');
+}
+
+function populateAdminForms() {
+  const w = appData.wars;
+  setVal('f-cwar-name', w.current.name);
+  setVal('f-cwar-map', w.current.map);
+  setVal('f-cwar-teams', w.current.teams);
+  setVal('f-cwar-date', w.current.date);
+  setVal('f-cwar-info', w.current.info);
+  setVal('f-nwar-name', w.next.name);
+  setVal('f-nwar-date', w.next.date);
+  setVal('f-nwar-map', w.next.map);
+  setVal('f-nwar-format', w.next.format);
+  setVal('f-nwar-info', w.next.info);
+  setVal('f-lv-version', appData.launcher.version);
+  setVal('f-lv-win', appData.launcher.win);
+  setVal('f-lv-linux', appData.launcher.linux);
+  setVal('f-lv-mac', appData.launcher.mac);
+  setVal('wh-wars', appData.webhooks.wars);
+  setVal('wh-announcements', appData.webhooks.announcements);
+  setVal('wh-shop', appData.webhooks.shop);
+  setVal('f-stat-players', appData.stats.players);
+  setVal('f-stat-wars', appData.stats.wars);
+  setVal('f-stat-members', appData.stats.members);
+
+  renderAdminLists();
+}
+
+function renderAdminLists() {
+  renderAdminList('admin-modpacks-list', appData.modpacks, 'modpack');
+  renderAdminList('admin-shop-list', appData.shop, 'shop');
+  renderAdminList('admin-spoilers-list', appData.spoilers, 'spoiler');
+  renderAdminList('admin-announcements-list', appData.announcements, 'announcement');
+}
+
+function renderAdminList(elId, items, type) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.innerHTML = items.map((item, i) => `
+    <div class="admin-item">
+      <span class="admin-item-name">${item.name || item.title}</span>
+      <div class="admin-item-actions">
+        <button class="btn-icon del" onclick="deleteItem('${type}', ${i})">🗑</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function deleteItem(type, index) {
+  const map = { modpack: 'modpacks', shop: 'shop', spoiler: 'spoilers', announcement: 'announcements' };
+  const key = map[type];
+  appData[key].splice(index, 1);
+  saveData();
+  renderAll();
+  renderAdminLists();
+  toast('Item removido', 'success');
+}
+
+// ============================================================
+// SAVE FUNCTIONS
+// ============================================================
+function saveWars() {
+  appData.wars.current = {
+    name: getVal('f-cwar-name') || appData.wars.current.name,
+    map: getVal('f-cwar-map') || appData.wars.current.map,
+    teams: getVal('f-cwar-teams') || appData.wars.current.teams,
+    date: getVal('f-cwar-date') || appData.wars.current.date,
+    info: getVal('f-cwar-info') || appData.wars.current.info,
+  };
+  appData.wars.next = {
+    name: getVal('f-nwar-name') || appData.wars.next.name,
+    date: getVal('f-nwar-date') || appData.wars.next.date,
+    map: getVal('f-nwar-map') || appData.wars.next.map,
+    format: getVal('f-nwar-format') || appData.wars.next.format,
+    info: getVal('f-nwar-info') || appData.wars.next.info,
+  };
+  saveData();
+  renderWars();
+  toast('Guerras atualizadas!', 'success');
+}
+
+function addWarUpdate() {
+  const title = getVal('f-update-title');
+  const day = getVal('f-update-day');
+  const month = getVal('f-update-month');
+  const text = getVal('f-update-text');
+  if (!title || !text) { toast('Preencha título e texto', 'error'); return; }
+  appData.wars.updates.unshift({ day: day || '??', month: month || '???', title, text });
+  saveData();
+  renderWars();
+  ['f-update-title','f-update-day','f-update-month','f-update-text'].forEach(id => setVal(id, ''));
+  toast('Atualização adicionada!', 'success');
+}
+
+function addModpack() {
+  const name = getVal('f-mp-name');
+  const desc = getVal('f-mp-desc');
+  const version = getVal('f-mp-version');
+  const icon = getVal('f-mp-icon') || '📦';
+  const url = getVal('f-mp-url') || '#';
+  if (!name) { toast('Preencha o nome', 'error'); return; }
+  appData.modpacks.push({ id: Date.now(), name, desc, version, icon, url });
+  saveData();
+  renderModpacks();
+  renderAdminLists();
+  ['f-mp-name','f-mp-desc','f-mp-version','f-mp-icon','f-mp-url'].forEach(id => setVal(id, ''));
+  toast('Modpack adicionado!', 'success');
+}
+
+function addShopItem() {
+  const name = getVal('f-sh-name');
+  const desc = getVal('f-sh-desc');
+  const price = getVal('f-sh-price');
+  const badge = getVal('f-sh-badge');
+  const icon = getVal('f-sh-icon') || '🛒';
+  const link = getVal('f-sh-link') || '#';
+  if (!name) { toast('Preencha o nome', 'error'); return; }
+  appData.shop.push({ id: Date.now(), name, desc, price, badge, icon, link });
+  saveData();
+  renderShop();
+  renderAdminLists();
+  ['f-sh-name','f-sh-desc','f-sh-price','f-sh-badge','f-sh-icon','f-sh-link'].forEach(id => setVal(id, ''));
+  toast('Item adicionado à loja!', 'success');
+}
+
+function addSpoiler() {
+  const title = getVal('f-sp-title');
+  const hint = getVal('f-sp-hint');
+  const content = getVal('f-sp-content');
+  if (!title || !content) { toast('Preencha título e conteúdo', 'error'); return; }
+  appData.spoilers.push({ id: Date.now(), title, hint, content });
+  saveData();
+  renderSpoilers();
+  renderAdminLists();
+  ['f-sp-title','f-sp-hint','f-sp-content'].forEach(id => setVal(id, ''));
+  toast('Spoiler adicionado!', 'success');
+}
+
+function addAnnouncement() {
+  const title = getVal('f-an-title');
+  const text = getVal('f-an-text');
+  const type = getVal('f-an-type') || 'info';
+  const date = getVal('f-an-date') || new Date().toLocaleDateString('pt-BR');
+  if (!title || !text) { toast('Preencha título e texto', 'error'); return; }
+  appData.announcements.unshift({ id: Date.now(), title, text, type, date });
+  saveData();
+  renderAnnouncements();
+  renderAdminLists();
+  ['f-an-title','f-an-text','f-an-date'].forEach(id => setVal(id, ''));
+  toast('Aviso adicionado!', 'success');
+}
+
+function saveLauncher() {
+  appData.launcher = {
+    version: getVal('f-lv-version') || appData.launcher.version,
+    win: getVal('f-lv-win') || appData.launcher.win,
+    linux: getVal('f-lv-linux') || appData.launcher.linux,
+    mac: getVal('f-lv-mac') || appData.launcher.mac,
+  };
+  saveData();
+  renderLauncher();
+  toast('Launcher atualizado!', 'success');
+}
+
+function saveWebhooks() {
+  appData.webhooks = {
+    wars: getVal('wh-wars'),
+    announcements: getVal('wh-announcements'),
+    shop: getVal('wh-shop'),
+  };
+  saveData();
+  checkWebhookStatus();
+  toast('Webhooks salvos!', 'success');
+}
+
+function saveStats() {
+  appData.stats = {
+    players: getVal('f-stat-players') || appData.stats.players,
+    wars: getVal('f-stat-wars') || appData.stats.wars,
+    members: getVal('f-stat-members') || appData.stats.members,
+  };
+  saveData();
+  renderStats();
+  toast('Estatísticas atualizadas!', 'success');
+}
+
+function checkWebhookStatus() {
+  const wh = appData.webhooks;
+  const el1 = document.getElementById('status-wh-wars');
+  const el2 = document.getElementById('status-wh-ann');
+  if (el1) {
+    el1.textContent = wh.wars ? 'Configurado' : 'Não configurado';
+    el1.className = 'status-badge ' + (wh.wars ? 'ok' : 'pending');
+  }
+  if (el2) {
+    el2.textContent = wh.announcements ? 'Configurado' : 'Não configurado';
+    el2.className = 'status-badge ' + (wh.announcements ? 'ok' : 'pending');
+  }
+}
+
+// ============================================================
+// DISCORD WEBHOOK
+// ============================================================
+function updatePreview() {
+  const title = getVal('wh-title') || 'Título aqui';
+  const desc = getVal('wh-desc') || 'Descrição aqui';
+  const footer = getVal('wh-footer') || 'BlackDz Community';
+  setText('prev-title', title);
+  setText('prev-desc', desc);
+  setText('prev-footer', footer);
+}
+
+async function sendWebhook() {
+  const target = getVal('wh-target');
+  const urlMap = {
+    wars: appData.webhooks.wars,
+    announcements: appData.webhooks.announcements,
+    shop: appData.webhooks.shop
+  };
+  const webhookUrl = urlMap[target];
+  if (!webhookUrl) { toast('Configure o webhook primeiro!', 'error'); return; }
+
+  const title = getVal('wh-title');
+  const desc = getVal('wh-desc');
+  const footer = getVal('wh-footer') || 'BlackDz Community';
+  const colorHex = (getVal('wh-color') || '#c8102e').replace('#', '');
+  const color = parseInt(colorHex, 16);
+
+  if (!title) { toast('Preencha o título', 'error'); return; }
+
+  const payload = {
+    username: "BlackDz Community",
+    avatar_url: "https://i.imgur.com/placeholder.png",
+    embeds: [{
+      title: title,
+      description: desc,
+      color: color,
+      footer: { text: footer + " • " + new Date().toLocaleDateString('pt-BR') },
+      timestamp: new Date().toISOString(),
+      author: { name: "BlackDz Community" }
+    }]
+  };
+
+  try {
+    const res = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (res.ok || res.status === 204) {
+      toast('Mensagem enviada ao Discord! ✅', 'success');
+    } else {
+      toast(`Erro: ${res.status} — Verifique a URL`, 'error');
+    }
+  } catch(e) {
+    toast('Erro ao enviar. Verifique a URL do webhook.', 'error');
+  }
+}
+
+// ============================================================
+// LAUNCHER DOWNLOAD
+// ============================================================
+function downloadLauncher(platform) {
+  const urls = {
+    windows: appData.launcher.win,
+    linux: appData.launcher.linux,
+    mac: appData.launcher.mac
+  };
+  const url = urls[platform];
+  if (!url || url === '#') {
+    toast('Link do launcher não configurado. Configure no Admin → Launcher.', 'error');
+    return;
+  }
+  window.open(url, '_blank');
+}
+
+// ============================================================
+// ADMIN TAB SWITCHING
+// ============================================================
+function switchTab(panelId, tabEl) {
+  document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+  tabEl.classList.add('active');
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg, type='success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
+function setVal(id, val) { const el = document.getElementById(id); if (el) el.value = val || ''; }
+function getVal(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+// Close modal on overlay click
+document.getElementById('admin-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeAdmin();
+});
+
+// ESC to close
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAdmin(); });
+</script>
+</body>
+</html>
