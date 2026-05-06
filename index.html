@@ -1378,16 +1378,12 @@
           <input type="password" class="form-input" id="admin-pass" placeholder="••••••••">
         </div>
         <button class="btn-primary" style="width:100%; margin-top: 0.5rem;" onclick="adminLogin()">Entrar</button>
-        <p style="font-size: 0.75rem; color: var(--text3); text-align: center; margin-top: 1rem;">Configure suas credenciais no Firebase Auth</p>
+
       </div>
 
       <!-- ADMIN PANEL (after login) -->
       <div id="admin-panel" style="display: none;">
 
-        <!-- Firebase Config Notice -->
-        <div style="background: rgba(41,121,255,0.08); border: 1px solid rgba(41,121,255,0.2); border-radius: 6px; padding: 1rem 1.2rem; margin-bottom: 1.5rem; font-size: 0.8rem; color: #7ab3ff;">
-          ℹ Configure o Firebase: substitua as variáveis <code style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 3px;">FIREBASE_CONFIG</code> no script antes de publicar.
-        </div>
 
         <div class="admin-tabs">
           <div class="admin-tab active" onclick="switchTab('wars-tab', this)">⚔ Guerras</div>
